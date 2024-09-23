@@ -1,22 +1,12 @@
 <template>
-  <div class="login-page">
-    <h2>Iniciar Sesión</h2>
-    <form @submit.prevent="login">
-      <div>
-        <label for="email">Correo Electrónico:</label>
-        <input type="email" v-model="email" required />
-      </div>
-      <div>
-        <label for="password">Contraseña:</label>
-        <input type="password" v-model="password" required />
-      </div>
-      <button type="submit">Iniciar Sesión</button>
-    </form>
-  </div>
+  <q-form @submit.prevent="onLogin">
+    <q-input v-model="email" label="Email" />
+    <q-input v-model="password" type="password" label="Password" />
+    <q-btn type="submit" label="Login" color="primary" />
+  </q-form>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -25,35 +15,38 @@ export default {
     }
   },
   methods: {
-    login() {
-      if (this.email && this.password) {
-        // Hacer la llamada a la API de autenticación
-        this.$axios.post('/api/login', {
-          email: this.email,
-          password: this.password
-        })
+    onLogin() {
+      const loginData = {
+        email: this.email,
+        password: this.password // Enviar la contraseña sin encriptar
+      };
+
+      // Enviar los datos al backend
+      this.loginRequest(loginData);
+    },
+    loginRequest(loginData) {
+      // Cambia el URL por el endpoint correcto de tu backend PHP
+      this.$axios.post('https://api2.aplicacionesweb.cl', loginData)
         .then(response => {
-         
-          localStorage.setItem('auth_token', token);
-          this.$router.push('/dashboard'); // Redirigir después del login
+          // Aquí deberías manejar lo que sucede en caso de éxito
+          console.log('Login success:', response.data);
+
+          if (response.data.success) {
+            // Guardar el token si se devuelve
+            localStorage.setItem('authToken', response.data.token);
+            
+            // Redirigir al dashboard después del login exitoso
+            this.$router.push('/Dashboard');
+          } else {
+            // Manejar el caso en que el login falle
+            console.error('Login failed:', response.data.message);
+          }
         })
         .catch(error => {
-          alert('Correo o contraseña incorrectos.');
+          // Manejo de errores
+          console.error('Login error:', error);
         });
-      } else {
-        alert('Por favor, completa todos los campos.');
-      }
     }
   }
 }
 </script>
-
-<style scoped>
-.login-page {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
-</style>
