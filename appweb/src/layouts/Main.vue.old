@@ -1,0 +1,111 @@
+<template>
+	<q-layout view="lHh Lpr lFf">
+	
+		<!-- "********************* Encabezado *************************" -->
+		<q-header elevated v-if="this.$store.state.user.id">
+			<q-toolbar>
+				<q-btn
+					flat
+					dense
+					round
+					icon="menu"
+					aria-label="Menu"
+					@click="showMenu = true"/>
+				<q-toolbar-title>
+				{{title}}
+				</q-toolbar-title>
+
+			</q-toolbar>
+			
+		</q-header>
+
+		<!-- "********************* Menú *************************" -->
+		<q-drawer
+			v-model="showMenu"
+			bordered
+			content-class="bg-grey-1">
+		
+			<q-list>
+				<q-item class='bg-primary text-white text-h6'>Menu</q-item>
+				<!--menuOption
+					v-for="link in menuOptionList"
+					:key="link.title"
+					v-bind="link"
+					@click='onClick'/-->
+			</q-list>
+			
+		</q-drawer>
+
+		<!-- "********************* Página *************************" -->
+		<q-page-container>
+			<router-view/>
+		</q-page-container>
+
+		</q-layout>
+</template>
+
+<script>
+//import menuOption from 'components/menuOption'
+import router from '../router';
+
+export default {
+	name: 'MainLayout'
+	,components: {
+		menuOption
+	}
+	,data () {
+		return {
+		  showMenu: false
+		  ,title:"Clientes"	//primera opción..
+		  ,currentOption:null
+		  ,menuOptionList: [
+			 { title: 'Clientes'		, icon: 'ion-home'		,link: '/MainLayout'	}
+			,{ title: 'Pedidos'			, icon: 'ion-document'	,link: '/Pedidos'		}
+			,{ title: 'Productos' 		, icon: 'ion-cube' 		,link: '/Productos'		}
+			,{ title: 'Cerrar sesión' 	, icon: 'ion-exit' 		,link: '/'				}
+		  ]
+		}
+	}
+	,methods:{
+		onClick( opt ){
+			this.showMenu=false
+			this.title = opt.title
+			if( opt.link != this.$route.path )
+				this.$router.push( opt.link )
+		}
+	}
+	,mounted(){
+
+		if( !this.$store.state.user.id )
+			this.$router.push( '/' )
+
+		this.$q.notify.setDefaults({
+			position: 'top-right'
+			,timeout: 2500
+			,textColor: 'white'
+			,actions: [{ icon: 'close', color: 'white' }]
+		})
+	}
+}
+</script>
+
+/*
+<style lang="sass">
+.sticky-header
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th 
+    background-color: #fff
+    font-size: 1em
+
+  thead tr th
+    position: sticky
+    z-index: 1
+
+  thead tr:last-child th
+
+    top: 48px
+  thead tr:first-child th
+    top: 0
+</style>
+*/
