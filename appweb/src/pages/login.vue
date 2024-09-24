@@ -1,18 +1,36 @@
 <template>
-  <q-form @submit.prevent="onLogin">
-    <q-input v-model="email" label="Email" />
-    <q-input v-model="password" type="password" label="Password" />
-    <q-btn type="submit" label="Login" color="primary" />
-  </q-form>
-</template>
+  <div class="login-container">
+    <!-- Agregar logo arriba del formulario -->
+    
+    
+    <q-form @submit.prevent="onLogin" class="login-form">
+      <img src="~assets/logo-lira.png" width="100px" alt="Logo" class="logo">
+      <q-input v-model="email" label="Email" />
+      <q-input v-model="password" type="password" label="Password" />
+      <q-btn type="submit" label="Login" class="login-button" color="primary" />
+    </q-form>
 
+    <!-- Alertas de éxito o error -->
+    <q-dialog v-model="showDialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">{{ alertMessage }}</div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </div>
+</template>
 <script>
 export default {
   data() {
     return {
       email: '',
       password: '',
-      // Lista de usuarios hardcodeados
+      alertMessage: '', 
+      showDialog: false, 
       users: [
         { email: 'usuario1@gmail.com', password: 'password1' },
         { email: 'user2@example.com', password: 'password2' }
@@ -26,16 +44,60 @@ export default {
       );
 
       if (user) {
-        // Usuario encontrado, login exitoso
-        console.log('Login success for user:', user.email);
+       
+        this.alertMessage = 'Iniciando sesion... ';
+        this.showDialog = true;
         
-        // Redirigir al dashboard
-        this.$router.push('/dashboard');
+       
+        setTimeout(() => {
+          this.$router.push('/dashboard');
+        }, 2000); // Redirigir después de 2 segundos
       } else {
-        // Si no se encuentra el usuario o las credenciales son incorrectas
-        console.error('Login failed: Invalid email or password');
+        this.alertMessage = 'Error: Email o contraseña incorrectos';
+        this.showDialog = true;
       }
     }
   }
 };
+
 </script>
+
+
+<style scoped>
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  font-family: Georgia, serif;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.login-button {
+  background-color: #b0b0b0;
+  transition: box-shadow 0.3s ease;
+  margin-top: 15px;
+}
+
+.login-button:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.q-input input {
+  font-family: Georgia, serif;
+}
+
+.q-form {
+  text-align: center;
+}
+</style>
