@@ -8,7 +8,7 @@ error_reporting(E_ALL);
     header('Content-Type:application/json;charset=utf-8');
 	header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-	header('Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Allow-Origin, Authorization');
+	header('Access-Control-Allow-Headers:X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Access-Control-Allow-Origin, Authorization');
 
     header('Expires: Wed, 16 Aug 1972 04:00:00 GMT');
     header('Cache-Control: no-store, no-cache, must-revalidate');

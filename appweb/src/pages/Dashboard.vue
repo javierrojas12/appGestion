@@ -49,7 +49,7 @@
                         <div class="text-h6">{{ card.title }}</div>
                       </div>
                       <div class="col-4">
-                        <q-btn class="detail-button" to="/login"
+                        <q-btn class="detail-button" to="/Detail"
                           >Detalle</q-btn
                         >
                       </div>
