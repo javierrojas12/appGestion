@@ -1,10 +1,8 @@
 <template>
   <div class="login-container">
     <!-- Agregar logo arriba del formulario -->
-    
-    
     <q-form @submit.prevent="onLogin" class="login-form">
-      <img src="~assets/logo-lira.png" width="100px" alt="Logo" class="logo">
+      <img src="~assets/logo-lira.png" width="100px" alt="Logo" class="logo" />
       <q-input v-model="email" label="Email" />
       <q-input v-model="password" type="password" label="Password" />
       <q-btn type="submit" label="Login" class="login-button" color="primary" />
@@ -23,18 +21,19 @@
     </q-dialog>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-      alertMessage: '', 
-      showDialog: false, 
+      email: "",
+      password: "",
+      alertMessage: "",
+      showDialog: false,
       users: [
-        { email: 'usuario1@gmail.com', password: 'password1' },
-        { email: 'user2@example.com', password: 'password2' }
-      ]
+        { email: "javier", password: "123123" },
+        { email: "user2@example.com", password: "password2" },
+      ],
     };
   },
   methods: {
@@ -44,27 +43,30 @@ export default {
       );
 
       if (user) {
-       
-        this.alertMessage = 'Iniciando sesion... ';
+        // Usuario encontrado, iniciar sesión
+        const fakeAuthToken = "123456"; // Generar un token falso para el ejemplo
+        localStorage.setItem("authToken", fakeAuthToken);
+
+        // Mostrar mensaje de inicio de sesión exitoso
+        this.alertMessage = "Iniciando sesión...";
         this.showDialog = true;
-        
-       
-        setTimeout(() => {
-          this.$router.push('/dashboard');
-        }, 2000); // Redirigir después de 2 segundos
+        // Esperar 2 segundos antes de redirigir automáticamente
+          if (this.$route.path !== "/dashboard") {
+            
+            this.$router.push("/dashboard");
+              // Redirigir al dashboard si no estamos allí
+          } 
       } else {
-        this.alertMessage = 'Error: Email o contraseña incorrectos';
+        // Usuario no encontrado, mostrar error
+        this.alertMessage = "Error: Email o contraseña incorrectos";
         this.showDialog = true;
       }
-    }
-  }
+    },
+  },
 };
-
 </script>
 
-
 <style scoped>
-
 .login-container {
   display: flex;
   justify-content: center;
